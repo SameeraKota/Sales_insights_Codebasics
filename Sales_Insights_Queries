@@ -1,1 +1,89 @@
 
+USE Sales;
+
+#1) Show all customer records
+SELECT 
+    *
+FROM
+    customers;
+
+#2) Show total number of customers
+SELECT 
+    COUNT(*)
+FROM
+    customers;
+
+#3) Show transactions for Chennai market (market code for chennai is Mark001)
+SELECT 
+    *
+FROM
+    transactions
+WHERE
+    market_code = 'Mark001';
+
+#4) Show distinct product codes that were sold in chennai
+SELECT DISTINCT
+    t.product_code
+FROM
+    transactions t
+        JOIN
+    markets m ON m.markets_code = t.market_code
+WHERE
+    m.markets_name = 'Chennai';
+
+SELECT distinct product_code FROM transactions where market_code='Mark001';
+
+#5) Show transactions where currency is US dollars
+SELECT 
+    *
+FROM
+    transactions
+WHERE
+    currency = 'USD';
+
+#6) Show transactions in 2020 join by date table
+SELECT 
+    *
+FROM
+    transactions t
+        JOIN
+    date d ON d.cy_date = t.order_date
+WHERE
+    YEAR(order_date) = '2020';
+
+#7) Show total revenue in year 2020
+SELECT 
+    SUM(sales_amount) AS total_revenue
+FROM
+    transactions
+WHERE
+    YEAR(order_date) = '2020'
+        AND currency = 'INR'
+        OR currency = 'USD';
+
+ 
+#8) Show total revenue in year 2020, January Month
+SELECT 
+    SUM(sales_amount) AS total_revenue
+FROM
+    transactions t
+        JOIN
+    date d ON t.order_date = d.date
+WHERE
+    d.year = '2020'
+        AND d.month_name = 'January'
+        AND (currency = 'INR' OR currency = 'USD');
+
+#9) Show total revenue in year 2020 in Chennai
+SELECT 
+    SUM(t.sales_amount) AS total_revenue
+FROM
+    transactions t
+        JOIN
+    markets m ON t.market_code = m.markets_code
+WHERE
+    YEAR(order_date) = '2020'
+        AND m.markets_name = 'Chennai';
+
+
+
